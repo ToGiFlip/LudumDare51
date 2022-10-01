@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBehavior : MonoBehaviour
+public class FieldOfView : MonoBehaviour
 {
-    Camera viewCamera;
-
     public float viewRadius;
     [Range(0,360)]
     public float viewAngle;
@@ -50,17 +48,13 @@ public class EnemyBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        viewCamera = Camera.main;
-
         StartCoroutine(FindTargetsWithDelay(0.2f));
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Make object look in mouse cursors direction (TEMPORARY)
-        Vector3 mousePos = viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, viewCamera.transform.position.y));
-        transform.LookAt(mousePos + Vector3.up * transform.position.y);
+        
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
