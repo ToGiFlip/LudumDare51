@@ -9,7 +9,11 @@ public class PlayerMovement3D : MonoBehaviour
     public float movementSpeed;
     public float runSpeed;
     bool holdingSprintButton = false;
-    bool isSprinting = false;
+    public bool isSprinting = false;
+    public float stamCurrent = 100f;
+    public float stamMax = 100f;
+    public float staminaDegen = 1f;
+    public float staminaRegen = 1f;
 
     private Rigidbody rb;
 
@@ -43,7 +47,22 @@ public class PlayerMovement3D : MonoBehaviour
     }
     void HandleSprinting(){
         holdingSprintButton = Input.GetKey(KeyCode.LeftShift);
+
+        if (holdingSprintButton){
+            if (stamCurrent > 0){
+                isSprinting = true;
+                stamCurrent -= Time.deltaTime * staminaDegen;
+            }
+            else{
+                isSprinting = false;
+            }
+        }
+        else{
+            isSprinting = false;
+            if (stamCurrent < stamMax){
+                stamCurrent += Time.deltaTime * staminaRegen;
+            }
+        }
         
-        isSprinting = holdingSprintButton;
     }
 }
