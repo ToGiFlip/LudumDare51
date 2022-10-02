@@ -11,6 +11,8 @@ public class FieldOfView : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstacleMask;
 
+    public bool isCaught = false;
+
     [HideInInspector]
     public List<Transform> visibleTargets = new List<Transform>();
 
@@ -66,7 +68,12 @@ public class FieldOfView : MonoBehaviour
                 if (!Physics.Raycast(transform.position, dirToTarget, disToTarget, obstacleMask))
                 {
                     visibleTargets.Add(target);
+                    isCaught = true;
                 }
+            }
+            else
+            {
+                isCaught = false;
             }
         }
     }
