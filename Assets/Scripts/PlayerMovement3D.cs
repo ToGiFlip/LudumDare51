@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class PlayerMovement3D : MonoBehaviour
 {
-    public float MovementSpeed;
+    float horizontalInput;
+    float verticalInput;
+    public float movementSpeed;
+    public float runSpeed;
+    bool holdingSprintButton = false;
+    bool isSprinting = false;
 
     private Rigidbody rb;
 
@@ -14,12 +19,31 @@ public class PlayerMovement3D : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+    void Update(){
+        GetMovementInput();
+    }
 
-        rb.velocity = new Vector3(horizontalInput * MovementSpeed, 0, verticalInput * MovementSpeed);
+    void FixedUpdate()
+    {
+        HandleSprinting();
+        MovePlayer();
+    }
+
+    void MovePlayer(){
+        if (isSprinting){
+            rb.velocity = new Vector3(horizontalInput * runSpeed, 0, verticalInput * runSpeed);
+        }
+        else{
+            rb.velocity = new Vector3(horizontalInput * movementSpeed, 0, verticalInput * movementSpeed);
+        }
+    }
+    void GetMovementInput(){
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
+    }
+    void HandleSprinting(){
+        holdingSprintButton = Input.GetKey(KeyCode.LeftShift);
+        
+        isSprinting = holdingSprintButton;
     }
 }
