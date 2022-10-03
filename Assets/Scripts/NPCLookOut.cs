@@ -4,19 +4,26 @@ using UnityEngine;
 
 public class NPCLookOut : MonoBehaviour
 {
-    Camera viewCamera;
+    public float rotSpeed;
+    public float minRotAngle;
+    public float maxRotAngle;
+
+    public float startTime;
+    public float pause;
 
     // Start is called before the first frame update
     void Start()
     {
-        viewCamera = Camera.main;
+        
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        //Make object look in mouse cursors direction (TEMPORARY)
-        Vector3 mousePos = viewCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, viewCamera.transform.position.y));
-        transform.LookAt(mousePos + Vector3.up * transform.position.y);
+        //Interpolate smoothly between 2 values, back and forth
+        float rotY = Mathf.SmoothStep(minRotAngle, maxRotAngle, Mathf.PingPong(Time.time * rotSpeed, 1));
+
+        //Aplly interpolation to objects rotation in Y
+        transform.rotation = Quaternion.Euler(0, rotY, 0);
     }
 }
